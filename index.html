@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bakery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF6F0;
+    --warm: #F2E9DC;
+    --caramel: #C47A2B;
+    --caramel-dark: #8A5218;
+    --espresso: #2E1B0E;
+    --espresso-mid: #5C3A1E;
+    --text: #2E1B0E;
+    --text-muted: #7A5C3E;
+    --white: #FFFDF9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid rgba(196,122,43,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--caramel-dark);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { font-style: italic; color: var(--caramel); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--caramel); }
+
+  /* HERO */
+  .hero {
+    min-height: 90vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(170deg, var(--warm) 0%, var(--cream) 60%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(196,122,43,0.08) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--caramel);
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05; font-weight: 700;
+    color: var(--espresso);
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .hero h1 em { font-style: italic; color: var(--caramel); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--text-muted); max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .btn {
+    display: inline-block; padding: 0.85rem 2.2rem;
+    background: var(--caramel); color: var(--white);
+    border-radius: 100px; text-decoration: none;
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn:hover { background: var(--caramel-dark); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--caramel);
+    border: 1.5px solid var(--caramel);
+    margin-left: 1rem;
+  }
+  .btn-outline:hover { background: var(--caramel); color: var(--white); }
+
+  .hero-badges {
+    display: flex; gap: 2rem; margin-top: 4rem;
+    justify-content: center; flex-wrap: wrap;
+  }
+  .badge { text-align: center; }
+  .badge-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--caramel-dark);
+    display: block;
+  }
+  .badge-label {
+    font-size: 0.78rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* SECTION COMMON */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--caramel); font-weight: 500; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; color: var(--espresso);
+    line-height: 1.15; margin-bottom: 1rem;
+  }
+  .section-title em { font-style: italic; color: var(--caramel); }
+  .divider {
+    width: 40px; height: 2px; background: var(--caramel);
+    margin: 1.5rem 0;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center; margin-top: 3rem;
+  }
+  .about-img-wrap { position: relative; }
+  .about-img-wrap::before {
+    content: '';
+    position: absolute; inset: -12px; background: var(--warm);
+    border-radius: 2px; z-index: 0;
+  }
+  .about-img {
+    width: 100%; aspect-ratio: 4/5; object-fit: cover;
+    position: relative; z-index: 1;
+    border-radius: 2px; display: block;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 4/5;
+    background: var(--warm); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; position: relative; z-index: 1;
+  }
+  .about-text p { color: var(--text-muted); margin-bottom: 1rem; }
+
+  /* SKILLS */
+  .skill-bar { margin-bottom: 1.25rem; }
+  .skill-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem;
+    color: var(--espresso-mid);
+  }
+  .skill-track {
+    height: 4px; background: var(--warm); border-radius: 100px; overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%; background: var(--caramel); border-radius: 100px;
+  }
+
+  /* PORTFOLIO */
+  .portfolio { background: var(--white); }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem; margin-top: 3rem;
+  }
+  .portfolio-item {
+    aspect-ratio: 1; overflow: hidden; border-radius: 4px;
+    background: var(--warm); cursor: pointer; position: relative;
+  }
+  .portfolio-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s ease; display: block;
+  }
+  .portfolio-item:hover img { transform: scale(1.05); }
+  .portfolio-overlay {
+    position: absolute; inset: 0;
+    background: rgba(46,27,14,0.5);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+  .portfolio-overlay span {
+    color: white; font-size: 0.8rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 4rem; margin-top: 3rem; align-items: start;
+  }
+  .contact-info p { color: var(--text-muted); margin-bottom: 2rem; }
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .contact-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--warm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .contact-detail-text { font-size: 0.9rem; }
+  .contact-detail-label {
+    color: var(--text-muted); font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label {
+    font-size: 0.8rem; font-weight: 500; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .form-group input, .form-group textarea {
+    border: 1px solid rgba(196,122,43,0.25);
+    background: var(--white); color: var(--text);
+    padding: 0.75rem 1rem; border-radius: 4px;
+    font-family: inherit; font-size: 0.95rem;
+    transition: border-color 0.2s; outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--caramel);
+  }
+  .form-group textarea { min-height: 120px; resize: vertical; }
+  .btn-submit {
+    width: 100%; padding: 0.85rem 2.2rem;
+    background: var(--caramel); color: var(--white);
+    border: none; border-radius: 100px; cursor: pointer;
+    font-family: inherit; font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.03em; transition: background 0.2s, transform 0.15s;
+  }
+  .btn-submit:hover { background: var(--caramel-dark); transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--espresso); color: rgba(255,255,255,0.5);
+    text-align: center; padding: 2rem;
+    font-size: 0.85rem;
+  }
+  footer strong { color: rgba(255,255,255,0.9); }
+
+  /* MODAL */
+  #modal {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.85);
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  #modal.open { display: flex; }
+  #modal img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 4px; cursor: default; }
+
+  /* DECORATIVE IMAGE STRIPS */
+  .img-divider {
+    width: 100%; height: 300px;
+    overflow: hidden; position: relative;
+  }
+  .img-divider::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(46,27,14,0.18);
+  }
+  .img-divider img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+
+  @media (max-width: 700px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .btn-outline { display: none; }
+    .hero-badges { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">My <span>Bakery</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <p class="hero-eyebrow">Handmade with love, baked fresh daily</p>
+  <h1>Where every bite<br>tells a <em>story</em></h1>
+  <p class="hero-sub">Artisan baking crafted from seasonal ingredients, timeless recipes, and a whole lot of passion.</p>
+  <div>
+    <a href="#portfolio" class="btn">See my work</a>
+    <a href="#contact" class="btn btn-outline">Get in touch</a>
+  </div>
+  <div class="hero-badges">
+    <div class="badge"><span class="badge-num">14+</span><span class="badge-label">Partners</span></div>
+    <div class="badge"><span class="badge-num">55+</span><span class="badge-label">Creations</span></div>
+    <div class="badge"><span class="badge-num">89+</span><span class="badge-label">Happy clients</span></div>
+    <div class="badge"><span class="badge-num">150+</span><span class="badge-label">Orders fulfilled</span></div>
+  </div>
+</section>
+
+<div class="img-divider">
+  <img src="main.jpg" alt="">
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">About me</p>
+    <h2 class="section-title">A lifelong love<br>for <em>baking</em></h2>
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <img src="self.jpg" alt="Baker portrait" class="about-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="about-img-placeholder" style="display:none;">🧑‍🍳</div>
+      </div>
+      <div class="about-text">
+        <p>Hello! I'm a passionate baker based in Paris, dedicated to creating handcrafted treats that bring people together. From flaky croissants to celebration cakes, every item is made with care and the finest local ingredients.</p>
+        <p>I believe baking is both an art and a science — a precise craft that, when done right, creates moments of pure joy. Whether it's a wedding cake or a simple sourdough loaf, I pour the same dedication into every creation.</p>
+        <div class="divider"></div>
+        <div class="skill-bar">
+          <div class="skill-label"><span>Cakes &amp; Celebration</span><span>90%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width: 90%;"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-label"><span>Desserts &amp; Pastries</span><span>85%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width: 85%;"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-label"><span>Artisan Breads</span><span>75%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width: 75%;"></div></div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-label"><span>Sweets &amp; Confections</span><span>75%</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width: 75%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="img-divider">
+  <img src="main2.jpg" alt="">
+</div>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="portfolio">
+  <div class="container">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">A taste of<br><em>my work</em></h2>
+    <p style="color: var(--text-muted); max-width: 480px;">Click any image for a closer look at my latest creations.</p>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </div>
+</section>
+
+<div class="img-divider">
+  <img src="main3.jpg" alt="">
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">Let's create<br>something <em>delicious</em></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Have a special order in mind? A wedding cake, birthday treats, or custom pastries for an event? I'd love to hear from you.</p>
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Location</div>
+            Paris, France
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Phone</div>
+            +33 01 02 03 15 00
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Email</div>
+            mail@mail.com
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First name</label>
+            <input type="text" id="fname" name="fname" placeholder="Marie" required>
+          </div>
+          <div class="form-group">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" name="lname" placeholder="Dupont" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="marie@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your order or event..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <strong>My Bakery</strong> · Paris, France · Baked with love</p>
+</footer>
+
+<!-- LIGHTBOX MODAL -->
+<div id="modal" onclick="closeModal()">
+  <img id="modalImg" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<script>
+  const imgs = [
+    { src: 'p8.jpg', alt: 'Artisan creation' },
+    { src: 'p2.jpg', alt: 'Fresh bakes' },
+    { src: 'p3.jpg', alt: 'Pastry selection' },
+    { src: 'p4.jpg', alt: 'Custom cake' },
+    { src: 'p5.jpg', alt: 'Bread loaves' },
+    { src: 'p6.jpg', alt: 'Sweet treats' },
+    { src: 'p7.jpg', alt: 'Celebration cake' },
+    { src: 'p1.jpg', alt: 'Seasonal special' },
+  ];
+
+  const grid = document.getElementById('portfolioGrid');
+  imgs.forEach(function(img) {
+    const item = document.createElement('div');
+    item.className = 'portfolio-item';
+    item.innerHTML = '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy"><div class="portfolio-overlay"><span>View</span></div>';
+    item.addEventListener('click', function() { openModal(img.src, img.alt); });
+    grid.appendChild(item);
+  });
+
+  function openModal(src, alt) {
+    document.getElementById('modalImg').src = src;
+    document.getElementById('modalImg').alt = alt;
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    var btn = e.target.querySelector('button');
+    btn.textContent = 'Message sent! ✓';
+    btn.style.background = '#3B6D11';
+    setTimeout(function() {
+      btn.textContent = 'Send message →';
+      btn.style.background = '';
+    }, 3000);
+  }
+</script>
+</body>
+</html>
